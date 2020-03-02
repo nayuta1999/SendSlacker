@@ -1,0 +1,12 @@
+{
+    "name": "nayuta1999/sendslacker",
+    "require": {
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "authors": [
+        {
+            "name": "nayuta1999",
+            "email": "youmu331@gmail.com"
+        }
+    ]
+}
