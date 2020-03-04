@@ -2,8 +2,7 @@
 require_once 'vendor/autoload.php';
 class SendSlacker{
     private $token;
-    private $block = [];
-    private $attachments = [];
+    private $contents = [];
     private $debug = false;
     /**
      * __construct
@@ -23,7 +22,7 @@ class SendSlacker{
      * @author nayuta1999 <youmu331@gmail.com>
      */
     public function addBlock($block){
-        $this->block[] = $block;
+        $this->contents["blocks"][] = $block;
     }
 
     /**
@@ -34,18 +33,36 @@ class SendSlacker{
      * @author nayuta1999 <youmu331@gmail.com>
      */
     public function addAttachments($attachments){
-        $this->attachments[] = $attachments;
+        $this->contents["attachments"][] = $attachments;
     }
 
     /**
      * setDebug
-     *
+     *　デバッグモードを設定する(セットすると400で例外を投げる)
      * @return void
      */
     public function setDebug(){
         $this->debug = true;
     }
 
+    /**
+     * sendContents
+     * blocksやattachmentsを使った場合はこちらを使う
+     * @return boolean
+     */
+    public function sendContents(){
+        $payload = $this->contents;
+        $client = new \GuzzleHttp\Client();
+        if($this->debug == false){
+            $res = $client->request('POST',$this->token,['json' => $payload,'http_errors' => false]);
+            var_dump($res->getBody()->getContents());die;
+            return true;
+        }
+        else{
+            $client->request('POST',$this->token,$this->token,['json' => $payload]);
+            return true;
+        }
+    }
     /**
      * sendText
      *
@@ -54,19 +71,9 @@ class SendSlacker{
      */
     public function sendText($text){
         $payload =["text" => $text];
-        if(!empty($this->block)){
-            $payload[] = $this->block;
-        }
-        if(!empty($this->attachments)){
-            $payload[] = $this->atachments;
-        }
         $client = new \GuzzleHttp\Client();
         if($this->debug == false){
-            try {
-                $client->request('POST',$this->token,['json' => $payload]);
-            } catch (ClientException $e) {
-                return false;
-            }
+            $client->request('POST',$this->token,['json' => $payload,'http_errors' => false]);
             return true;
         }
         else{
