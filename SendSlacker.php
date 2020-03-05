@@ -40,6 +40,7 @@ class SendSlacker{
      * setDebug
      *　デバッグモードを設定する(セットすると400で例外を投げる)
      * @return void
+     * @author nayuta1999 <youmu331@gmail.com>
      */
     public function setDebug(){
         $this->debug = true;
@@ -49,31 +50,39 @@ class SendSlacker{
      * sendContents
      * blocksやattachmentsを使った場合はこちらを使う
      * @return boolean
+     * @author nayuta1999 <youmu331@gmail.com>
      */
     public function sendContents(){
         $payload = $this->contents;
         $client = new \GuzzleHttp\Client();
         if($this->debug == false){
             $res = $client->request('POST',$this->token,['json' => $payload,'http_errors' => false]);
-            var_dump($res->getBody()->getContents());die;
+            if(preg_match("/4..|5../",(string)$res->getStatusCode())){
+                return false;
+            }
             return true;
         }
         else{
             $client->request('POST',$this->token,$this->token,['json' => $payload]);
             return true;
         }
+        $this->contents = null;
     }
     /**
      * sendText
      *
      * @param string $text 送信したいテキスト
      * @return void
+     * @author nayuta1999 <youmu331@gmail.com>
      */
     public function sendText($text){
         $payload =["text" => $text];
         $client = new \GuzzleHttp\Client();
         if($this->debug == false){
             $client->request('POST',$this->token,['json' => $payload,'http_errors' => false]);
+            if(preg_match("/4..|5../",(string)$res->getStatusCode())){
+                return false;
+            }
             return true;
         }
         else{

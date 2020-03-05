@@ -2,3 +2,4 @@
 docker-compose.yml
 Dockerfile
 test.php
+.DS_Store
