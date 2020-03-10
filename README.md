@@ -10,7 +10,7 @@ php:7.3
 guzzlehttp/guzzle
 ## Install
 ```
-composer require nayuta1999/SendSlacker
+composer require nayuta1999/sendslacker
 ```
 
 ## 使い方
