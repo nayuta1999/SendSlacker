@@ -79,7 +79,7 @@ class SendSlacker{
         $payload =["text" => $text];
         $client = new \GuzzleHttp\Client();
         if($this->debug == false){
-            $client->request('POST',$this->token,['json' => $payload,'http_errors' => false]);
+            $res = $client->request('POST',$this->token,['json' => $payload,'http_errors' => false]);
             if(preg_match("/4..|5../",(string)$res->getStatusCode())){
                 return false;
             }
