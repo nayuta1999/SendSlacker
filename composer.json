@@ -3,6 +3,11 @@
     "require": {
         "guzzlehttp/guzzle": "^6.5"
     },
+    "autoload": {
+        "psr-4": {
+            "sendSlacker\\":"src/"
+        }
+    },
     "authors": [
         {
             "name": "nayuta1999",
